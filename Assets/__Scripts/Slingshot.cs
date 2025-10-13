@@ -18,6 +18,12 @@ public class Slingshot : MonoBehaviour
     public AudioClip        launchSound;
 
     private AudioSource audioSrc;
+    public LineRenderer rubberBand1;
+    public LineRenderer rubberBand2;
+    public Transform bandFront1;
+    public Transform bandFront2;
+    public Transform bandBack1;
+    public Transform bandBack2;
 
     void Awake()
     {
@@ -74,11 +80,21 @@ public class Slingshot : MonoBehaviour
         // Move the projectile to this new position
         Vector3 projPos = launchPos + mouseDelta;
         projectile.transform.position = projPos;
+        
+        rubberBand1.enabled = true;
+        rubberBand1.SetPosition(0, bandBack1.position);
+        rubberBand1.SetPosition(1, projPos);
+
+        rubberBand2.enabled = true;
+        rubberBand2.SetPosition(0, bandBack2.position);
+        rubberBand2.SetPosition(1, projPos);
 
         if (Input.GetMouseButtonUp(0))
         {
             audioSrc.PlayOneShot(launchSound);
             aimingMode = false;
+            rubberBand1.enabled = false;
+            rubberBand2.enabled = false;
             Rigidbody projRB = projectile.GetComponent<Rigidbody>();
             projRB.isKinematic = false;
             projRB.collisionDetectionMode = CollisionDetectionMode.Continuous;
@@ -86,7 +102,7 @@ public class Slingshot : MonoBehaviour
 
             // Switch to slingshot view immediately before setting POI
             FollowCam.SWITCH_VIEW(FollowCam.eView.slingshot);
-            
+
             FollowCam.POI = projectile; // Set the _MainCamera POI
             // Add a ProjectileLine to the Projectile
             Instantiate<GameObject>(projLinePrefab, projectile.transform);
