@@ -15,6 +15,9 @@ public class Slingshot : MonoBehaviour
     public Vector3          launchPos;
     public GameObject       projectile;
     public bool             aimingMode;
+    public AudioClip        launchSound;
+
+    private AudioSource audioSrc;
 
     void Awake()
     {
@@ -22,6 +25,7 @@ public class Slingshot : MonoBehaviour
         launchPoint = launchPointTrans.gameObject;
         launchPoint.SetActive(false);
         launchPos = launchPointTrans.position;
+        audioSrc = GetComponent<AudioSource>();
     }
 
     void OnMouseEnter()
@@ -73,6 +77,7 @@ public class Slingshot : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
+            audioSrc.PlayOneShot(launchSound);
             aimingMode = false;
             Rigidbody projRB = projectile.GetComponent<Rigidbody>();
             projRB.isKinematic = false;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public enum GameMode
 {
@@ -14,7 +15,7 @@ public class MissionDemolition : MonoBehaviour
 {
     static private MissionDemolition S; // a private Singleton
 
-    [Header("Inscribed")]
+    [Header("Inscribed")]   // must change myself
     public Text uitLevel; // The UIText_Level Text
     public Text uiShots; // The UIText_Shots Text
     public Vector3 castlePos; // The place to put castles
@@ -27,6 +28,9 @@ public class MissionDemolition : MonoBehaviour
     public GameObject castle; // The current castle
     public GameMode mode = GameMode.idle;
     public string showing = "Show Slingshot"; // FollowCam mode
+    public AudioClip goalSound;
+
+    private AudioSource audioSrc;
 
     void Start()
     {
@@ -35,6 +39,7 @@ public class MissionDemolition : MonoBehaviour
         level = 0;
         shotsTaken = 0;
         levelMax = castles.Length;
+        audioSrc = GetComponent<AudioSource>();
 
         StartLevel();
     }
@@ -93,9 +98,12 @@ public class MissionDemolition : MonoBehaviour
         level++;
         if (level == levelMax)
         {
+            SceneManager.LoadScene(1);  // load game over scene
             level = 0;
             shotsTaken = 0;
         }
+        audioSrc.PlayOneShot(goalSound);
+
         StartLevel();
     }
 
