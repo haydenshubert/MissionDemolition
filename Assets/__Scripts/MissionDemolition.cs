@@ -28,9 +28,6 @@ public class MissionDemolition : MonoBehaviour
     public GameObject castle; // The current castle
     public GameMode mode = GameMode.idle;
     public string showing = "Show Slingshot"; // FollowCam mode
-    public AudioClip goalSound;
-
-    private AudioSource audioSrc;
 
     void Start()
     {
@@ -39,7 +36,6 @@ public class MissionDemolition : MonoBehaviour
         level = 0;
         shotsTaken = 0;
         levelMax = castles.Length;
-        audioSrc = GetComponent<AudioSource>();
 
         StartLevel();
     }
@@ -98,11 +94,10 @@ public class MissionDemolition : MonoBehaviour
         level++;
         if (level == levelMax)
         {
-            SceneManager.LoadScene(1);  // load game over scene
+            SceneManager.LoadScene(2);  // load game over scene
             level = 0;
             shotsTaken = 0;
         }
-        audioSrc.PlayOneShot(goalSound);
 
         StartLevel();
     }
@@ -117,5 +112,12 @@ public class MissionDemolition : MonoBehaviour
     static public GameObject GET_CASTLE()
     {
         return S.castle;
+    }
+
+    public void QuitGame()
+    {
+        SceneManager.LoadScene(2);  // load game over scene
+        level = 0;
+        shotsTaken = 0;
     }
 }

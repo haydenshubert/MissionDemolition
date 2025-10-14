@@ -7,6 +7,9 @@ public class Goal : MonoBehaviour
 {
     // A static fiedl accessible by code anywhere
     static public bool goalMet = false;
+    public AudioClip goalSound;
+
+    private AudioSource audioSrc;
 
     void OnTriggerEnter(Collider other)
     {
@@ -17,6 +20,8 @@ public class Goal : MonoBehaviour
         {
             // If so, set goalMet to true
             Goal.goalMet = true;
+            audioSrc = GetComponent<AudioSource>();
+            audioSrc.PlayOneShot(goalSound);
             // Also set the alpha of the color to higher opacity
             Material mat = GetComponent<Renderer>().material;
             Color c = mat.color;
